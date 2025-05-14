@@ -52,6 +52,7 @@ docker-compose.*.yml
 *.h2.db
 
 ### Spring Boot ###
+src/main/resources/application.properties
 !src/main/resources/application.properties
 !src/main/resources/application.yml
 !src/test/resources/application-test.properties

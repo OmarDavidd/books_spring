@@ -73,3 +73,6 @@ yarn-error.log*
 ### Otros ###
 **/__pycache__/
 *.pyc
+
+target/
+*.jar

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "prestamos")
@@ -32,6 +31,12 @@ public class Prestamo {
 
     @Column(name = "fecha_devolucion_esperada")
     private LocalDateTime fechaDevolucionEsperada;
+
+    @Column(name = "duracion")
+    private int duracion;
+
+    @Column(name = "lugar")
+    private String lugar;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estado", nullable = false)

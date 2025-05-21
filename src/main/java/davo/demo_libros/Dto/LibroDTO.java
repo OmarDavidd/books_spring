@@ -20,5 +20,6 @@ public class LibroDTO {
     private LocalDateTime fechaCreacion;
     private String estado;
     private List<GeneroDTO> generos;
+    private String idUsuario;
     private String nombreUsuario;
 }

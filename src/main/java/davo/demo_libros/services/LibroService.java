@@ -4,13 +4,12 @@ import davo.demo_libros.Dto.GeneroDTO;
 import davo.demo_libros.Dto.LibroDTO;
 import davo.demo_libros.Dto.UserDTO;
 import davo.demo_libros.Models.Genero;
-import davo.demo_libros.Models.ImagenLibro;
 import davo.demo_libros.Models.Libro;
-import davo.demo_libros.Models.Usuario;
 import davo.demo_libros.Repository.LibroRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import davo.demo_libros.Repository.UsuarioRepository;
@@ -53,9 +52,14 @@ public class LibroService {
             dto.setGeneros(Collections.emptyList());
         }
 
+        Optional<UserDTO> userOpt = usuarioService.findById(book.getUsuario().getId());
+
+        dto.setIdUsuario(
+                userOpt.map(user -> user.getId().toString())  // Convertimos Long a String
+                        .orElse("Usuario no disponible")
+        );
         dto.setNombreUsuario(
-                usuarioService.findById(book.getUsuario().getId())
-                        .map(UserDTO::getNombreCompleto)
+                userOpt.map(UserDTO::getNombreCompleto)
                         .orElse("Usuario no disponible")
         );
         return dto;

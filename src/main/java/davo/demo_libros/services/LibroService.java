@@ -1,10 +1,17 @@
 package davo.demo_libros.services;
 
+import davo.demo_libros.Dto.GeneroDTO;
+import davo.demo_libros.Dto.LibroDTO;
+import davo.demo_libros.Dto.UserDTO;
+import davo.demo_libros.Models.Genero;
 import davo.demo_libros.Models.ImagenLibro;
 import davo.demo_libros.Models.Libro;
 import davo.demo_libros.Models.Usuario;
 import davo.demo_libros.Repository.LibroRepository;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import davo.demo_libros.Repository.UsuarioRepository;
@@ -20,8 +27,53 @@ public class LibroService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Libro> obtenerTodosLosLibros() {
-        return libroRepository.findAll();
+    @Autowired
+    private UsuarioService usuarioService;
+
+    public LibroDTO convertToDTO(Libro book) {
+        if (book == null) {
+            return null;
+        }
+
+        LibroDTO dto = new LibroDTO();
+        dto.setId(book.getId());
+        dto.setTitulo(book.getTitulo());
+        dto.setAutor(book.getAutor());
+        dto.setAnioPublicacion(book.getAnioPublicacion());
+        dto.setIsbn(book.getIsbn());
+        dto.setEditorial(book.getEditorial());
+        dto.setEstado(book.getEstadoFisico());
+        if (book.getGeneros() != null) {
+            dto.setGeneros(
+                    book.getGeneros().stream()
+                            .map(this::convertGeneroToDTO)
+                            .collect(Collectors.toList())
+            );
+        } else {
+            dto.setGeneros(Collections.emptyList());
+        }
+
+        dto.setNombreUsuario(
+                usuarioService.findById(book.getUsuario().getId())
+                        .map(UserDTO::getNombreCompleto)
+                        .orElse("Usuario no disponible")
+        );
+        return dto;
+    }
+
+    private GeneroDTO convertGeneroToDTO(Genero genero) {
+        GeneroDTO generoDTO = new GeneroDTO();
+        generoDTO.setId(genero.getId());
+        generoDTO.setNombre(genero.getNombre());
+        generoDTO.setDescripcion(genero.getDescripcion());
+        return generoDTO;
+    }
+
+    public List<LibroDTO> obtenerTodosLosLibrosDTO() {
+        return libroRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public Libro addLibro(Libro libro, Long usuarioId) {
@@ -71,4 +123,5 @@ public class LibroService {
         }
         libroRepository.deleteById(id);
     }
+
 }

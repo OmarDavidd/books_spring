@@ -2,13 +2,20 @@ package davo.demo_libros.Models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+
 @Table(name = "usuarios")
+@Getter
+@Setter
+@NoArgsConstructor
 @Data
 public class Usuario {
 

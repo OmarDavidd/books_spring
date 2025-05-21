@@ -16,6 +16,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    /*
     @GetMapping
     public List<Usuario> getAllUsuarios() {
         return usuarioService.findAll();
@@ -26,13 +27,13 @@ public class UsuarioController {
         return usuarioService.findById(id)
                 .map(usuario -> new ResponseEntity<>(usuario, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 
     @PostMapping
     public Usuario createUsuario(@RequestBody Usuario usuario) {
         return usuarioService.addUser(usuario);
     }
-
+/*
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         return usuarioService.findById(id)
@@ -42,8 +43,8 @@ public class UsuarioController {
                     return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
+    }*/
+/*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
         return usuarioService.findById(id)
@@ -73,5 +74,5 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+*/
 }

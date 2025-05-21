@@ -1,5 +1,6 @@
 package davo.demo_libros.services;
 
+import davo.demo_libros.Dto.UserDTO;
 import davo.demo_libros.Models.Usuario;
 import davo.demo_libros.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,29 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private UserDTO convertToDTO(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+        UserDTO dto = new UserDTO();
+        dto.setId(usuario.getId());
+        dto.setNombreCompleto(usuario.getNombre());
+        dto.setEmail(usuario.getEmail());
+        dto.setFechaRegistro(usuario.getFechaRegistro().toString());
+        dto.setValoracion(usuario.getValoracion());
+        dto.setActivo(usuario.getActivo());
+        dto.setIdLibros(usuario.getLibros());
+
+        return dto;
+    }
+
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
+    public Optional<UserDTO> findById(Long id) {
+        return usuarioRepository.findById(id)
+                .map(this::convertToDTO); // Convierte Usuario -> UsuarioDTO dentro del Optional
     }
 
     public Usuario addUser(Usuario usuario) {

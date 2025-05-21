@@ -18,5 +18,7 @@ public class LibroDTO {
     private String isbn;
     private String editorial;
     private LocalDateTime fechaCreacion;
+    private String estado;
     private List<GeneroDTO> generos;
+    private String nombreUsuario;
 }

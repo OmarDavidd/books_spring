@@ -11,12 +11,12 @@ import davo.demo_libros.Repository.LibroRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import davo.demo_libros.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LibroService {
@@ -69,6 +69,7 @@ public class LibroService {
         return generoDTO;
     }
 
+    @Transactional(readOnly = true)
     public List<LibroDTO> obtenerTodosLosLibrosDTO() {
         return libroRepository.findAll()
                 .stream()
@@ -76,6 +77,18 @@ public class LibroService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public LibroDTO obtenerLibroPorId(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID no puede ser nulo");
+        }
+        return libroRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + id));
+    }
+
+    /*
+    @Transactional
     public Libro addLibro(Libro libro, Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + usuarioId));
@@ -88,7 +101,9 @@ public class LibroService {
 
         return libroRepository.save(libro);
     }
-
+*/
+    /*
+    @Transactional
     public Libro addLibro(Libro libro) {
         libro.getImagenes().clear();
 
@@ -98,30 +113,22 @@ public class LibroService {
             List<ImagenLibro> imagenes = imageUrls.stream()
                     .map(url -> {
                         ImagenLibro imagen = new ImagenLibro();
-                        imagen.setUrlImagen(url); // Usando setUrlImagen
-                        imagen.setLibro(libro); // Establecer la relación bidireccional
-                        // Puedes añadir lógica para nombre de archivo, orden, etc. aquí si tu entidad ImagenLibro lo soporta
+                        imagen.setUrlImagen(url);
+                        imagen.setLibro(libro);
                         return imagen;
                     })
                     .collect(Collectors.toList());
-            libro.setImagenes(imagenes); // Establecer la lista de imágenes en el libro
+            libro.setImagenes(imagenes);
         }
 
-        // Guardar el libro (esto también guardará las ImagenLibro asociadas debido al cascade)
         return libroRepository.save(libro);
-    }
-
-    // Otros métodos que puedas necesitar
-    public Libro obtenerLibroPorId(Long id) {
-        return libroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + id));
-    }
-
+    }*/
+/*
+    @Transactional
     public void eliminarLibro(Long id) {
         if (!libroRepository.existsById(id)) {
             throw new RuntimeException("Libro no encontrado con ID: " + id);
         }
         libroRepository.deleteById(id);
-    }
-
+    }*/
 }

@@ -21,9 +21,23 @@ public class LibroController {
 
 
     @GetMapping
-    public List<LibroDTO> getAllLibros() {
-        return libroService.obtenerTodosLosLibrosDTO();
+    public ResponseEntity<List<LibroDTO>> getAllLibros() {
+        List<LibroDTO> libros = libroService.obtenerTodosLosLibrosDTO();
+        return new ResponseEntity<>(libros, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LibroDTO> getLibroById(@PathVariable Long id) {
+        LibroDTO libro = libroService.obtenerLibroPorId(id);
+        if (libro != null) {
+            return new ResponseEntity<>(libro, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 
     /*
     // Modificado para retornar ResponseEntity<LibroDTO>

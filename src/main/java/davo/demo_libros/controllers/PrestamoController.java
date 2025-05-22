@@ -30,5 +30,12 @@ public class PrestamoController {
         return new ResponseEntity<>(prestamos, HttpStatus.OK);
     }
 
-
+    @GetMapping("/{id}")
+    public  ResponseEntity<List<PrestamoDTO>> getPrestamosByUserId(@PathVariable Long id) {
+        List<PrestamoDTO> prestamos = prestamosService.getPrestamosByUserId(id);
+        if (prestamos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(prestamos, HttpStatus.OK);
+    }
 }

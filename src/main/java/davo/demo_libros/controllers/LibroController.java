@@ -20,7 +20,7 @@ public class LibroController {
     private LibroService libroService;
 
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<LibroDTO>> getAllLibros() {
         List<LibroDTO> libros = libroService.obtenerTodosLosLibrosDTO();
         return new ResponseEntity<>(libros, HttpStatus.OK);
@@ -36,22 +36,46 @@ public class LibroController {
         }
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<LibroDTO> createLibro(@RequestBody Libro libro,
+                                                @RequestParam Long usuarioId) {
+        LibroDTO responseDto = libroService.addLibro(libro, usuarioId);
 
-
-
-    /*
-    // Modificado para retornar ResponseEntity<LibroDTO>
-    @PostMapping
-    public ResponseEntity<LibroDTO> createLibro(@RequestBody Libro libro) {
-        // Spring mapea el JSON de entrada al objeto Libro (incluyendo campo transitorio urlsImagenes si existe)
-        Libro savedLibro = libroService.addLibro(libro); // Llama al servicio para guardar
-
-        // Convertir la entidad guardada a DTO antes de retornar
-        LibroDTO responseDto = convertToDTO(savedLibro);
-
-        // Retornar el DTO con estado 201 Created
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-    }*/
+    }
 
+    //obtener libros por usuario
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<LibroDTO>> getBooksByUserId(@PathVariable Long usuarioId) {
+        List<LibroDTO> libros = libroService.obtenerLibrosPorUsuario(usuarioId);
+        if (libros != null && !libros.isEmpty()) {
+            return new ResponseEntity<>(libros, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<LibroDTO> updateLibro(@PathVariable Long id, @RequestBody Libro libro) {
+        try {
+            System.out.println(libro);
+            LibroDTO libroActualizado = libroService.updateLibro(id, libro);
+            return ResponseEntity.ok(libroActualizado); // Retorna 200 OK con el libro actualizado
+        } catch (RuntimeException e) {
+            // Manejo de error si el libro no se encuentra para actualizar
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 Not Found
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLibro(@PathVariable Long id) {
+        try {
+            libroService.eliminarLibro(id);
+            return ResponseEntity.noContent().build(); // Retorna 204 No Content
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Retorna 404 Not Found
+        }
+    }
+
+    
 }

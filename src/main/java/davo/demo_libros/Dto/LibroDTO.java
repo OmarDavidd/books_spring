@@ -19,7 +19,8 @@ public class LibroDTO {
     private String editorial;
     private LocalDateTime fechaCreacion;
     private String estado;
-    private List<GeneroDTO> generos;
+    private List<Long> generosIds;
     private String idUsuario;
     private String nombreUsuario;
+    private List<String> urlsImagenes;
 }

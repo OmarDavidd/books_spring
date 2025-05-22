@@ -48,6 +48,7 @@ public class Libro {
     @Column(name = "disponible_intercambio", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean disponibleIntercambio = true;
 
+
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImagenLibro> imagenes = new ArrayList<>();
 
@@ -60,7 +61,10 @@ public class Libro {
     private Set<Genero> generos = new HashSet<>();
 
     @Transient
-    private List<String> urlsImagenes;
+    private List<Long> generosIdsEntrada;
+
+    @Transient
+    private List<String> urlsImagenesEntrada;
 
     @PrePersist
     protected void onCreate() {

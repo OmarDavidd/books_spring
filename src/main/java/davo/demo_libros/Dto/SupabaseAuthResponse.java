@@ -1,16 +1,11 @@
 package davo.demo_libros.Dto;
 
-// Representa (una parte simplificada de) la respuesta de Supabase al iniciar sesión
-// Supabase incluye más campos como refresh_token, user, etc. Puedes añadir los que necesites.
 public class SupabaseAuthResponse {
-    private String access_token; // Este es el JWT
+    private String access_token;
     private String token_type;
-    private Long expires_in; // En segundos
+    private Long expires_in;
     private String refresh_token;
-    // Agrega un campo para el objeto user si lo necesitas, por ejemplo:
-    // private SupabaseUser user;
 
-    // Getters y setters
     public String getAccess_token() {
         return access_token;
     }
